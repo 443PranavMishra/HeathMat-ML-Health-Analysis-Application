@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthMat - Sleep Health Analysis</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sleep.css') }}">
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <canvas id="bg"></canvas>
+
+  <nav class="topbar">
+    <a href="/" class="logo">HealthMat</a>
+    <div class="tag">AI Clinical Intelligence Platform</div>
+    <a href="/" class="back">Sleep Health Model</a>
+  </nav>
+
+  <main class="page">
+
+    <section class="hero">
+      <div class="visual">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+
+        <svg class="sleep-svg" viewBox="0 0 220 220" fill="none">
+          <defs>
+            <radialGradient id="sleepGlow" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stop-color="#a78bfa" stop-opacity=".4" />
+              <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <ellipse cx="110" cy="112" rx="78" ry="70" fill="url(#sleepGlow)" />
+
+          <path
+            d="M75 95C75 68 95 51 119 51C110 61 106 73 106 87C106 116 130 137 158 132C147 150 128 162 105 162C87 162 71 154 61 141"
+            stroke="#a78bfa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+
+          <path d="M148 61H178L148 92H180" stroke="#60a5fa" stroke-width="4" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <path d="M128 101H152L128 126H154" stroke="#a78bfa" stroke-width="3" stroke-linecap="round"
+            stroke-linejoin="round" />
+
+          <path d="M38 178H72L82 154L92 196L104 139L118 178H182" stroke="#7c3aed" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round" />
+
+          <circle cx="77" cy="113" r="5" fill="#a78bfa" />
+          <circle cx="102" cy="123" r="6" fill="#7c3aed" />
+          <circle cx="128" cy="113" r="4" fill="#60a5fa" />
+        </svg>
+      </div>
+
+      <div class="copy">
+        <div class="eyebrow">Brain & Neural Health</div>
+        <h1>Sleep Health<br>Risk Engine</h1>
+        <p>Enter lifestyle, sleep, activity, stress, heart-rate, blood-pressure, and BMI details. The model predicts
+          sleep health status and possible sleep disorder risk.</p>
+
+        <div class="metric-row">
+          <div class="metric"><strong>10000+</strong><span>Trained Data</span></div>
+          <div class="metric"><strong>4</strong><span>Stacking Model Accuracy</span></div>
+          <div class="metric"><strong>Live</strong><span>Sleep Health prediction</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head">
+        <div>
+          <h2>Sleep & Lifestyle Parameters</h2>
+          <p>All fields map to the sleep health model.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span class="hint">Model column: Gender</span>
+          </div>
+
+          <div class="field">
+            <label>Age <span class="live" id="ageVal">35</span></label>
+            <input type="range" id="age" min="18" max="90" value="35">
+            <span class="hint">Patient age in years</span>
+          </div>
+
+          <div class="field">
+            <label>Occupation</label>
+            <select id="occupation">
+              <option value="Doctor">Doctor</option>
+              <option value="Nurse">Nurse</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Lawyer">Lawyer</option>
+              <option value="Teacher">Teacher</option>
+              <option value="Accountant">Accountant</option>
+              <option value="Salesperson">Salesperson</option>
+              <option value="Software Engineer">Software Engineer</option>
+              <option value="Scientist">Scientist</option>
+              <option value="Manager">Manager</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="hint">Work lifestyle context</span>
+          </div>
+
+          <div class="field">
+            <label>Sleep Duration <span class="live" id="sleepVal">7.0</span></label>
+            <input type="range" id="sleep_duration" min="3" max="10" step="0.1" value="7">
+            <span class="hint">Hours of sleep per night</span>
+          </div>
+
+          <div class="field">
+            <label>Sleep Quality <span class="live" id="qualityVal">7</span></label>
+            <input type="range" id="quality_sleep" min="1" max="10" value="7">
+            <span class="hint">Self-rated quality from 1 to 10</span>
+          </div>
+
+          <div class="field">
+            <label>Activity Level <span class="live" id="activityVal">60</span></label>
+            <input type="range" id="activity_level" min="0" max="100" value="60">
+            <span class="hint">Physical activity level</span>
+          </div>
+
+          <div class="field">
+            <label>Stress Level <span class="live" id="stressVal">5</span></label>
+            <input type="range" id="stress_level" min="1" max="10" value="5">
+            <span class="hint">Stress level from 1 to 10</span>
+          </div>
+
+          <div class="field">
+            <label>BMI Category</label>
+            <select id="bmi_category">
+              <option value="Normal">Normal</option>
+              <option value="Normal Weight">Normal Weight</option>
+              <option value="Overweight">Overweight</option>
+              <option value="Obese">Obese</option>
+            </select>
+            <span class="hint">Body weight category</span>
+          </div>
+
+          <div class="field">
+            <label>Blood Pressure <span class="live" id="bpVal">97.33</span></label>
+            <input type="range" id="blood_pressure" min="70" max="130" step="0.1" value="97.3">
+            <span class="hint">Combined BP numeric value used by model</span>
+          </div>
+
+
+          <div class="field">
+            <label>Heart Rate <span class="live" id="heartRateVal">70</span></label>
+            <input type="range" id="heart_rate" min="45" max="120" value="70">
+            <span class="hint">Resting heart rate</span>
+          </div>
+
+          <div class="field">
+            <label>Daily Steps <span class="live" id="stepsVal">7000</span></label>
+            <input type="range" id="daily_steps" min="1000" max="20000" step="500" value="7000">
+            <span class="hint">Approximate steps per day</span>
+          </div>
+
+        </div>
+
+        <button onclick="runSleepPrediction()" id="predictBtn">Analyze Sleep Health</button>
+        <div id="error"></div>
+      </div>
+    </section>
+
+
+    <section id="results">
+      <div id="resultBox" class="result">
+        <div id="badge" class="badge"></div>
+        <h2 id="title"></h2>
+        <p id="subtitle"></p>
+        <div class="risk-track">
+          <div id="riskFill"></div>
+        </div>
+        <div id="riskScore"></div>
+      </div>
+
+      <div class="stat-grid" id="stats"></div>
+
+      <div class="section">
+        <div class="sec-head">
+
+          <div>
+            <h2>Visual Analysis</h2>
+            <p>Sleep health probability and lifestyle risk charts.</p>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Disorder Probability</h3>
+            <div class="chart-wrap"><canvas id="donut"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Sleep Radar</h3>
+            <div class="chart-wrap"><canvas id="radar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Risk Factor Bars</h3>
+            <div class="chart-wrap"><canvas id="bar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Vital Zones</h3>
+            <div class="chart-wrap"><canvas id="vitals"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Analysis Report</h2>
+            <p>Simple explanation for the submitted sleep profile.</p>
+          </div>
+        </div>
+        <div class="reports" id="reports"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Precautions & Sleep Health Plan</h2>
+            <p>Important sleep-care guidance for patients.</p>
+          </div>
+        </div>
+
+        <div class="care-grid">
+          <div class="care-card"><strong>01</strong>
+            <h3>Keep Fixed Sleep Time</h3>
+            <p>Sleep and wake at nearly the same time every day to stabilize circadian rhythm.</p>
+          </div>
+          <div class="care-card"><strong>02</strong>
+            <h3>Reduce Screen Light</h3>
+            <p>Avoid bright screens 45-60 minutes before bed to support melatonin release.</p>
+          </div>
+          <div class="care-card"><strong>03</strong>
+            <h3>Manage Stress</h3>
+            <p>Try breathing, meditation, journaling, or relaxation before sleep.</p>
+          </div>
+          <div class="care-card"><strong>04</strong>
+            <h3>Stay Active</h3>
+            <p>Daily walking and exercise improve sleep quality, mood, and heart health.</p>
+          </div>
+          <div class="care-card"><strong>05</strong>
+            <h3>Limit Caffeine</h3>
+            <p>Avoid caffeine late in the day because it can delay sleep onset.</p>
+          </div>
+          <div class="care-card"><strong>06</strong>
+            <h3>Watch Apnea Signs</h3>
+            <p>Loud snoring, gasping, daytime sleepiness, and morning headaches need medical review.</p>
+          </div>
+          <div class="care-card"><strong>07</strong>
+            <h3>Improve Sleep Room</h3>
+            <p>Keep the room dark, cool, quiet, and comfortable.</p>
+          </div>
+          <div class="care-card"><strong>08</strong>
+            <h3>Consult Doctor</h3>
+            <p>If insomnia or apnea symptoms continue, consult a sleep specialist.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <script src="{{ url_for('static', filename='js/sleep.js') }}"></script>
+</body>
+
+</html>

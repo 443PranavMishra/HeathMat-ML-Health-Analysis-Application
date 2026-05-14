@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthMat - Brain Stroke Analysis</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stroke.css') }}">
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <canvas id="bg"></canvas>
+
+  <nav class="topbar">
+    <a href="/" class="logo">HealthMat</a>
+    <div class="tag">AI Clinical Intelligence Platform</div>
+    <a href="/" class="back">Brain Stroke Model</a>
+  </nav>
+
+  <main class="page">
+
+    <section class="hero">
+      <div class="visual">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+
+        <svg class="brain-svg" viewBox="0 0 220 220" fill="none">
+          <defs>
+            <radialGradient id="brainGlow" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stop-color="#a78bfa" stop-opacity=".38" />
+              <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <ellipse cx="110" cy="112" rx="78" ry="70" fill="url(#brainGlow)" />
+
+          <path d="M110 60Q82 52 66 66Q50 80 53 101Q47 117 58 132Q66 145 84 148Q95 157 110 153" stroke="#a78bfa"
+            stroke-width="3" stroke-linecap="round" />
+
+          <path d="M110 60Q138 52 154 66Q170 80 167 101Q173 117 162 132Q154 145 136 148Q125 157 110 153"
+            stroke="#a78bfa" stroke-width="3" stroke-linecap="round" />
+
+          <path d="M110 60Q108 108 110 153" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5 4" />
+
+          <path d="M38 178H76L84 153L94 196L105 137L118 178H182" stroke="#7c3aed" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round" />
+
+          <circle cx="82" cy="95" r="5" fill="#a78bfa" />
+          <circle cx="138" cy="95" r="5" fill="#a78bfa" />
+          <circle cx="110" cy="112" r="8" fill="#7c3aed" />
+        </svg>
+      </div>
+
+      <div class="copy">
+        <div class="eyebrow">Brain & Neural Health</div>
+        <h1>Brain Stroke<br>Risk Engine</h1>
+        <p>Enter stroke-related clinical and lifestyle parameters. The system analyzes blood pressure history, heart
+          disease, glucose level, BMI, smoking status, and age to estimate stroke risk.</p>
+
+        <div class="metric-row">
+          <div class="metric"><strong>20000+</strong><span>Trained Data</span></div>
+          <div class="metric"><strong>4</strong><span>Stacking Model Accuracy</span></div>
+          <div class="metric"><strong>Live</strong><span>Brain Stroke Prediction</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head">
+        <div>
+          <h2>Clinical Parameters</h2>
+          <p>All fields map to the brain stroke model.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="hint">Model column: gender</span>
+          </div>
+
+          <div class="field">
+            <label>Age <span class="live" id="ageVal">45</span></label>
+            <input type="range" id="age" min="1" max="100" value="45">
+            <span class="hint">Patient age in years</span>
+          </div>
+
+          <div class="field">
+            <label>Hypertension</label>
+            <select id="hypertension">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <span class="hint">High blood pressure history</span>
+          </div>
+
+          <div class="field">
+            <label>Heart Disease</label>
+            <select id="heart_disease">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <span class="hint">Existing cardiac disease</span>
+          </div>
+
+          <div class="field">
+            <label>Ever Married</label>
+            <select id="ever_married">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <span class="hint">Model column: ever_married</span>
+          </div>
+
+          <div class="field">
+            <label>Work Type</label>
+            <select id="work_type">
+              <option value="Private">Private</option>
+              <option value="Self-employed">Self-employed</option>
+              <option value="Govt_job">Govt job</option>
+              <option value="children">Children</option>
+              <option value="Never_worked">Never worked</option>
+            </select>
+            <span class="hint">Employment category</span>
+          </div>
+
+          <div class="field">
+            <label>Residence</label>
+            <select id="Residence_type">
+              <option value="Urban">Urban</option>
+              <option value="Rural">Rural</option>
+            </select>
+            <span class="hint">Urban or rural residence</span>
+          </div>
+
+          <div class="field">
+            <label>Avg Glucose <span class="live" id="glucoseVal">100</span></label>
+            <input type="range" id="avg_glucose_level" min="50" max="300" step="1" value="100">
+            <span class="hint">Average glucose level</span>
+          </div>
+
+          <div class="field">
+            <label>BMI <span class="live" id="bmiVal">25.0</span></label>
+            <input type="range" id="bmi" min="10" max="60" step="0.1" value="25">
+            <span class="hint">Body Mass Index</span>
+          </div>
+
+          <div class="field">
+            <label>Smoking Status</label>
+            <select id="smoking_status">
+              <option value="never smoked">Never smoked</option>
+              <option value="formerly smoked">Formerly smoked</option>
+              <option value="smokes">Smokes</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+            <span class="hint">Smoking history</span>
+          </div>
+
+        </div>
+
+        <button onclick="runStrokePrediction()" id="predictBtn">Analyze Brain Stroke Risk</button>
+        <div id="error"></div>
+      </div>
+    </section>
+
+
+
+    <section id="results">
+      <div id="resultBox" class="result">
+        <div id="badge" class="badge"></div>
+        <h2 id="title"></h2>
+        <p id="subtitle"></p>
+        <div class="risk-track">
+          <div id="riskFill"></div>
+        </div>
+        <div id="riskScore"></div>
+      </div>
+
+      <div class="stat-grid" id="stats"></div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Visual Analysis</h2>
+            <p>Stroke risk probability and neurological risk charts.</p>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Risk Probability</h3>
+            <div class="chart-wrap"><canvas id="donut"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Clinical Radar</h3>
+            <div class="chart-wrap"><canvas id="radar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Risk Factor Bars</h3>
+            <div class="chart-wrap"><canvas id="bar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Vital Zones</h3>
+            <div class="chart-wrap"><canvas id="vitals"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Analysis Report</h2>
+            <p>Simple explanation for the submitted stroke profile.</p>
+          </div>
+        </div>
+        <div class="reports" id="reports"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Precautions & Health Plan</h2>
+            <p>Important stroke-prevention guidance for patients.</p>
+          </div>
+        </div>
+
+        <div class="care-grid">
+          <div class="care-card"><strong>01</strong>
+            <h3>Control Blood Pressure</h3>
+            <p>High blood pressure is a major stroke trigger. Track BP regularly and follow medical advice.</p>
+          </div>
+          <div class="care-card"><strong>02</strong>
+            <h3>Manage Glucose</h3>
+            <p>Keep blood sugar under control through diet, activity, and medication if prescribed.</p>
+          </div>
+          <div class="care-card"><strong>03</strong>
+            <h3>Stop Smoking</h3>
+            <p>Smoking increases clot formation and damages brain blood vessels.</p>
+          </div>
+          <div class="care-card"><strong>04</strong>
+            <h3>Stay Active</h3>
+            <p>Regular walking or exercise improves circulation, BP, cholesterol, and glucose.</p>
+          </div>
+          <div class="care-card"><strong>05</strong>
+            <h3>Eat Brain-Healthy Foods</h3>
+            <p>Prefer vegetables, fruits, whole grains, lentils, nuts, fish, and low-salt meals.</p>
+          </div>
+          <div class="care-card"><strong>06</strong>
+            <h3>Know FAST Signs</h3>
+            <p>Face drooping, Arm weakness, Speech difficulty, Time to call emergency help.</p>
+          </div>
+          <div class="care-card"><strong>07</strong>
+            <h3>Maintain Weight</h3>
+            <p>Healthy weight reduces hypertension, diabetes, and vascular strain.</p>
+          </div>
+          <div class="care-card"><strong>08</strong>
+            <h3>Follow Medication</h3>
+            <p>Do not stop BP, diabetes, cholesterol, or heart medicines without doctor advice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+
+  </script>
+
+  <script src="{{ url_for('static', filename='js/stroke.js') }}"></script>
+</body>
+
+</html>

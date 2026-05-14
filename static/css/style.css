@@ -1,0 +1,564 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0
+}
+
+:root {
+  --brain: #7c3aed;
+  --brain-l: #a78bfa;
+  --brain-d: #4c1d95;
+  --brain-glow: rgba(124, 58, 237, .35);
+  --heart: #e11d48;
+  --heart-l: #fb7185;
+  --heart-d: #881337;
+  --heart-glow: rgba(225, 29, 72, .35);
+  --bg: #07080f;
+  --text: #f0f0ff;
+  --muted: rgba(240, 240, 255, .45);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text)
+}
+
+/* ════════════════════════════════
+   CANVAS
+════════════════════════════════ */
+#bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none
+}
+
+/* ════════════════════════════════
+   SPLIT LAYOUT
+════════════════════════════════ */
+.split {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ════════════════════════════════
+   DIVIDER
+════════════════════════════════ */
+.divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  z-index: 30;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(255, 255, 255, .06) 15%,
+      rgba(255, 255, 255, .18) 40%,
+      rgba(255, 255, 255, .18) 60%,
+      rgba(255, 255, 255, .06) 85%,
+      transparent 100%);
+}
+
+.divider-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  background: var(--bg);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 31;
+  box-shadow: 0 0 40px rgba(0, 0, 0, .8);
+}
+
+.divider-logo span {
+  font-family: 'Syne', sans-serif;
+  font-size: .52rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--brain-l), var(--heart-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* ════════════════════════════════
+   PANEL BASE
+════════════════════════════════ */
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 3.5rem 3rem;
+  overflow: hidden;
+  transition: flex .6s cubic-bezier(.4, 0, .2, 1);
+  cursor: default;
+}
+
+/* bg gradient per panel */
+.panel-brain {
+  background: radial-gradient(ellipse 90% 80% at 60% 40%, rgba(109, 40, 217, .13) 0%, transparent 70%)
+}
+
+.panel-heart {
+  background: radial-gradient(ellipse 90% 80% at 40% 40%, rgba(190, 18, 60, .13) 0%, transparent 70%)
+}
+
+/* hover expand */
+.split:hover .panel {
+  flex: 0.85
+}
+
+.split .panel:hover {
+  flex: 1.15 !important
+}
+
+/* ════════════════════════════════
+   ANIMATED ORB (ambient)
+════════════════════════════════ */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  opacity: .18;
+  animation: orbDrift 8s ease-in-out infinite;
+}
+
+@keyframes orbDrift {
+
+  0%,
+  100% {
+    transform: translate(0, 0)
+  }
+
+  33% {
+    transform: translate(20px, -15px)
+  }
+
+  66% {
+    transform: translate(-15px, 20px)
+  }
+}
+
+/* ════════════════════════════════
+   ORGAN ILLUSTRATION
+════════════════════════════════ */
+.organ-wrap {
+  position: relative;
+  width: min(200px, 22vw);
+  height: min(200px, 22vw);
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+}
+
+.organ-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible
+}
+
+/* spinning rings around organ */
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ring1 {
+  width: 130%;
+  height: 130%;
+  animation: ringR 12s linear infinite
+}
+
+.ring2 {
+  width: 160%;
+  height: 160%;
+  animation: ringR 18s linear infinite reverse
+}
+
+.ring3 {
+  width: 190%;
+  height: 190%;
+  animation: ringR 25s linear infinite
+}
+
+@keyframes ringR {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg)
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg)
+  }
+}
+
+/* dashed ring dots */
+.ring1::before,
+.ring2::before,
+.ring3::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+/* ════════════════════════════════
+   SECTION HEADER
+════════════════════════════════ */
+.panel-label {
+  font-size: .65rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: .5rem;
+  opacity: .7;
+}
+
+.panel-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin-bottom: .6rem;
+  text-align: center;
+}
+
+.panel-sub {
+  font-size: .8rem;
+  color: var(--muted);
+  max-width: 280px;
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+/* ════════════════════════════════
+   MODEL CARDS
+════════════════════════════════ */
+.models {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  width: 100%;
+  max-width: 320px
+}
+
+.mcard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 16px;
+  padding: .9rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: background .25s, border-color .25s, transform .3s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mcard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--c-grad);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.mcard:hover {
+  transform: translateX(6px);
+  border-color: var(--c-border);
+  box-shadow: 0 8px 32px var(--c-shadow);
+}
+
+.mcard:hover::before {
+  opacity: 1
+}
+
+.mcard-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid var(--c-border);
+  position: relative;
+  z-index: 1;
+}
+
+.mcard-body {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1
+}
+
+.mcard-name {
+  font-family: 'Syne', sans-serif;
+  font-size: .85rem;
+  font-weight: 700;
+  margin-bottom: .15rem
+}
+
+.mcard-desc {
+  font-size: .7rem;
+  color: var(--muted);
+  line-height: 1.4
+}
+
+.mcard-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-border);
+  position: relative;
+  z-index: 1;
+  transition: transform .25s;
+}
+
+.mcard:hover .mcard-arrow {
+  transform: translateX(3px)
+}
+
+/* brain card colors */
+.brain-card {
+  --c-grad: linear-gradient(135deg, rgba(124, 58, 237, .08), transparent);
+  --c-border: rgba(167, 139, 250, .25);
+  --c-shadow: rgba(124, 58, 237, .2);
+}
+
+/* heart card colors */
+.heart-card {
+  --c-grad: linear-gradient(135deg, rgba(225, 29, 72, .08), transparent);
+  --c-border: rgba(251, 113, 133, .25);
+  --c-shadow: rgba(225, 29, 72, .2);
+}
+
+/* ════════════════════════════════
+   BRAIN PANEL SPECIFICS
+════════════════════════════════ */
+.panel-brain .ring {
+  color: var(--brain-l);
+  border-color: rgba(167, 139, 250, .2)
+}
+
+.panel-brain .panel-label {
+  color: var(--brain-l)
+}
+
+.panel-brain .panel-title {
+  background: linear-gradient(135deg, #fff 30%, var(--brain-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ════════════════════════════════
+   HEART PANEL SPECIFICS
+════════════════════════════════ */
+.panel-heart .ring {
+  color: var(--heart-l);
+  border-color: rgba(251, 113, 133, .2)
+}
+
+.panel-heart .panel-label {
+  color: var(--heart-l)
+}
+
+.panel-heart .panel-title {
+  background: linear-gradient(135deg, #fff 30%, var(--heart-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ════════════════════════════════
+   EEG / ECG LINE DECORATION
+════════════════════════════════ */
+.signal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  pointer-events: none;
+  opacity: .25;
+}
+
+/* ════════════════════════════════
+   TOP NAV
+════════════════════════════════ */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .7rem 2rem;
+  background: rgba(7, 8, 15, .6);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, .05);
+}
+
+.topbar-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--brain-l), var(--heart-l));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.topbar-tag {
+  font-size: .68rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.topbar-badge {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 100px;
+  padding: .3rem .8rem;
+  font-size: .68rem;
+  color: var(--muted);
+}
+
+.topbar-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00e676;
+  animation: blink 2s infinite
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1
+  }
+
+  50% {
+    opacity: .3
+  }
+}
+
+/* ════════════════════════════════
+   PARTICLES
+════════════════════════════════ */
+.pt {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  animation: ptFloat linear infinite
+}
+
+@keyframes ptFloat {
+  0% {
+    transform: translateY(100vh);
+    opacity: 0
+  }
+
+  10% {
+    opacity: .5
+  }
+
+  90% {
+    opacity: .15
+  }
+
+  100% {
+    transform: translateY(-60px);
+    opacity: 0
+  }
+}
+
+/* ════════════════════════════════
+   RESPONSIVE TWEAK
+════════════════════════════════ */
+@media(max-width:768px) {
+  .split {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: auto;
+    min-height: 100vh
+  }
+
+  .divider {
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 2px;
+    transform: translateY(-50%)
+  }
+
+  .divider-logo {
+    top: 50%;
+    left: 50%
+  }
+
+  .panel {
+    padding: 5rem 1.5rem 2.5rem
+  }
+
+  html,
+  body {
+    overflow-y: auto
+  }
+}

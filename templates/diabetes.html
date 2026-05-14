@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthMat - Diabetes Prediction</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/diabetes.css') }}">
+
+
+</head>
+
+<body>
+  <canvas id="bg"></canvas>
+
+  <nav class="topbar">
+    <a href="/" class="logo">HealthMat</a>
+    <div class="tag">AI Clinical Intelligence Platform</div>
+    <a href="" class="back">Diabetes Model</a>
+  </nav>
+
+  <main class="page">
+    <section class="hero">
+      <div class="visual">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+
+        <svg class="drop" viewBox="0 0 200 240" fill="none">
+          <defs>
+            <radialGradient id="g" cx="50%" cy="45%" r="60%">
+              <stop offset="0%" stop-color="#fb7185" stop-opacity=".45" />
+              <stop offset="100%" stop-color="#e11d48" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="100" cy="125" rx="72" ry="80" fill="url(#g)" />
+          <path d="M100 34C120 68 150 99 150 135C150 167 129 195 100 195C71 195 50 167 50 135C50 99 80 68 100 34Z"
+            stroke="#fb7185" stroke-width="3" />
+          <path d="M35 188H72L82 160L92 215L105 145L120 188H165" stroke="#e11d48" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="84" cy="132" r="5" fill="#fb7185" />
+          <circle cx="116" cy="132" r="5" fill="#fb7185" />
+          <circle cx="100" cy="154" r="8" fill="#e11d48" />
+        </svg>
+      </div>
+
+      <div class="copy">
+        <div class="eyebrow">Heart & Metabolic</div>
+        <h1>Diabetes<br>Risk Engine</h1>
+        <p>Diabetes is one of the most critical health challenges affecting the modern generation. Use our AI-powered
+          Diabetes Prediction Model to analyze your health indicators, assess potential risk factors, and gain early
+          insights for preventive care and healthier living.
+        </p>
+
+        <div class="metric-row">
+          <div class="metric"><strong>100000+</strong><span>Trained Data</span></div>
+          <div class="metric"><strong>4</strong><span>Stacking Model Accuracy</span></div>
+          <div class="metric"><strong>Live</strong><span>Diabetes Prediction</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head">
+        <!-- <div class="sec-num">01</div> -->
+        <div>
+          <h2>Clinical Parameters</h2>
+          <p>All fields are required for predicting diabetes of patient.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="form-grid">
+          <div class="field">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="hint">Model feature: gender</span>
+          </div>
+
+          <div class="field">
+            <label>Age <span class="live" id="ageVal">30</span></label>
+            <input type="range" id="age" min="1" max="100" value="30">
+            <span class="hint">Range: 1 to 100 years</span>
+          </div>
+
+          <div class="field">
+            <label>Hypertension</label>
+            <select id="hypertension">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <span class="hint">0 means no, 1 means yes</span>
+          </div>
+
+          <div class="field">
+            <label>Heart Disease</label>
+            <select id="heart_disease">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <span class="hint">Existing cardiac disease</span>
+          </div>
+
+          <div class="field">
+            <label>Smoking History</label>
+            <select id="smoking_history">
+              <option value="never">Never</option>
+              <option value="No Info">No Info</option>
+              <option value="former">Former</option>
+              <option value="current">Current</option>
+              <option value="not current">Not Current</option>
+              <option value="ever">Ever</option>
+            </select>
+            <span class="hint">Training category match</span>
+          </div>
+
+          <div class="field">
+            <label>BMI <span class="live" id="bmiVal">25.0</span></label>
+            <input type="range" id="bmi" min="10" max="60" step="0.1" value="25">
+            <span class="hint">Body Mass Index</span>
+          </div>
+
+          <div class="field">
+            <label>HbA1c <span class="live" id="hbaVal">5.5%</span></label>
+            <input type="range" id="HbA1c_level" min="3.5" max="9" step="0.1" value="5.5">
+            <span class="hint">Normal under 5.7%</span>
+          </div>
+
+          <div class="field">
+            <label>Glucose <span class="live" id="glucVal">100</span></label>
+            <input type="range" id="blood_glucose_level" min="70" max="300" step="1" value="100">
+            <span class="hint">mg/dL</span>
+          </div>
+        </div>
+
+        <button onclick="runPrediction()" id="predictBtn">Analyze My Diabetes Risk</button>
+        <div id="error"></div>
+      </div>
+    </section>
+
+    <section id="results">
+      <div id="resultBox" class="result">
+        <div id="badge" class="badge"></div>
+        <h2 id="title"></h2>
+        <p id="subtitle"></p>
+        <div class="risk-track">
+          <div id="riskFill"></div>
+        </div>
+        <div id="riskScore"></div>
+      </div>
+
+      <div class="stat-grid" id="stats"></div>
+
+      <div class="section">
+        <div class="sec-head">
+          <!-- <div class="sec-num">02</div> -->
+          <div>
+            <h2>Visual Analysis</h2>
+            <p>Probability and biomarker charts.</p>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Risk Probability</h3>
+            <div class="chart-wrap"><canvas id="donut"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Clinical Radar</h3>
+            <div class="chart-wrap"><canvas id="radar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Risk Factor Bars</h3>
+            <div class="chart-wrap"><canvas id="bar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Vital Zones</h3>
+            <div class="chart-wrap"><canvas id="hbaChart"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <!-- <div class="sec-num">03</div> -->
+          <div>
+            <h2>Analysis Report</h2>
+            <p>Personalized summary from your input.</p>
+          </div>
+        </div>
+        <div class="reports" id="reports"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <!-- <div class="sec-num">04</div> -->
+          <div>
+            <h2 id="adviceTitle"></h2>
+            <p id="adviceSub"></p>
+          </div>
+        </div>
+        <div class="advice" id="advice"></div>
+      </div>
+
+      <div class="section" id="patient-care-plan">
+        <div class="sec-head">
+          <!-- <div class="sec-num">05</div> -->
+          <div>
+            <h2>Precautions & Health Plan</h2>
+            <p>Major precautions, healthy foods, and benefits every patient should know.</p>
+          </div>
+        </div>
+
+        <div class="care-grid">
+
+          <div class="care-card">
+            <div class="care-icon">01</div>
+            <h3>Monitor Blood Sugar</h3>
+            <p>Check fasting glucose and HbA1c as advised. Regular monitoring helps detect changes early and prevents
+              silent progression.</p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">02</div>
+            <h3>Reduce Added Sugar</h3>
+            <p>Limit sweets, sugary drinks, packaged juices, desserts, and refined snacks because they can rapidly
+              increase blood glucose.</p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">03</div>
+            <h3>Choose High-Fiber Meals</h3>
+            <p>Fiber slows sugar absorption and improves fullness. Add vegetables, lentils, beans, oats, seeds, and
+              whole grains.</p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">04</div>
+            <h3>Walk After Meals</h3>
+            <p>A 10-15 minute walk after meals can help reduce post-meal glucose spikes and improve insulin sensitivity.
+            </p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">05</div>
+            <h3>Maintain Healthy Weight</h3>
+            <p>Losing even 5-10% body weight can significantly improve insulin resistance, blood pressure, and metabolic
+              health.</p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">06</div>
+            <h3>Sleep 7-9 Hours</h3>
+            <p>Poor sleep can increase hunger hormones, stress hormones, and blood sugar. Keep a regular sleep schedule.
+            </p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">07</div>
+            <h3>Quit Smoking</h3>
+            <p>Smoking worsens blood vessel damage, insulin resistance, and heart risk. Quitting improves long-term
+              outcomes.</p>
+          </div>
+
+          <div class="care-card">
+            <div class="care-icon">08</div>
+            <h3>Follow Medical Advice</h3>
+            <p>Do not ignore symptoms or abnormal reports. Consult a doctor for medication, diet planning, and follow-up
+              testing.</p>
+          </div>
+
+        </div>
+
+        <!-- <div class="food-benefit-wrap">
+
+    <div class="food-list">
+      <h3>Healthy Foods to Prefer</h3>
+      <div class="food-pill-wrap">
+        <span class="food-pill">Leafy vegetables</span>
+        <span class="food-pill">Lentils and beans</span>
+        <span class="food-pill">Oats</span>
+        <span class="food-pill">Millets</span>
+        <span class="food-pill">Brown rice</span>
+        <span class="food-pill">Whole wheat roti</span>
+        <span class="food-pill">Nuts and seeds</span>
+        <span class="food-pill">Low-fat curd</span>
+        <span class="food-pill">Eggs or lean protein</span>
+        <span class="food-pill">Fish</span>
+        <span class="food-pill">Apple or guava</span>
+        <span class="food-pill">Plenty of water</span>
+      </div>
+    </div>
+
+    <div class="benefit-list">
+      <h3>Benefits of Following This Plan</h3>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <p>Helps lower fasting and post-meal blood glucose levels.</p>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <p>Improves insulin sensitivity and reduces diabetes progression risk.</p>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <p>Supports healthy weight, blood pressure, and cholesterol control.</p>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <p>Protects heart, kidney, eye, nerve, and foot health over time.</p>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-dot"></div>
+        <p>Improves daily energy, sleep quality, mood, and long-term wellness.</p>
+      </div>
+
+    </div>
+
+  </div> -->
+      </div>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/diabetes.js') }}"></script>
+</body>
+
+</html>

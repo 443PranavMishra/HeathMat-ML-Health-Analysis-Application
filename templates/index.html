@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthMat — AI Health Intelligence</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <canvas id="bg"></canvas>
+
+  <!-- top nav -->
+  <div class="topbar">
+    <div class="topbar-logo">HealthMat</div>
+    <div class="topbar-tag">AI Clinical Intelligence Platform</div>
+    <div class="topbar-badge">PRANAV MISHRA</div>
+  </div>
+
+  <!-- DIVIDER + LOGO CENTER -->
+  <div class="divider">
+    <div class="divider-logo"><span>HM<br></span></div>
+  </div>
+
+  <div class="split">
+
+    <!-- ══════ BRAIN PANEL ══════ -->
+    <div class="panel panel-brain">
+
+      <!-- ambient orb -->
+      <div class="orb" style="width:400px;height:400px;background:var(--brain);top:-10%;right:-10%"></div>
+
+      <!-- brain SVG -->
+      <div class="organ-wrap">
+        <div class="ring ring1"></div>
+        <div class="ring ring2"></div>
+        <div class="ring ring3"></div>
+        <svg class="organ-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <defs>
+            <radialGradient id="brainGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#a78bfa" stop-opacity=".3" />
+              <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+            </radialGradient>
+            <filter id="gf">
+              <feGaussianBlur stdDeviation="3" />
+            </filter>
+          </defs>
+          <!-- glow blob -->
+          <ellipse cx="100" cy="100" rx="70" ry="65" fill="url(#brainGlow)" />
+          <!-- brain outline - left hemisphere -->
+          <path d="M100 60 Q72 52 58 65 Q44 78 46 96 Q42 112 50 124 Q56 136 70 140 Q82 148 100 145" stroke="#a78bfa"
+            stroke-width="2" stroke-linecap="round" />
+          <!-- brain outline - right hemisphere -->
+          <path d="M100 60 Q128 52 142 65 Q156 78 154 96 Q158 112 150 124 Q144 136 130 140 Q118 148 100 145"
+            stroke="#a78bfa" stroke-width="2" stroke-linecap="round" />
+          <!-- center line -->
+          <path d="M100 60 Q98 100 100 145" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 3" />
+          <!-- folds left -->
+          <path d="M58 82 Q68 78 76 85" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".7" />
+          <path d="M52 98 Q64 94 72 102" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".7" />
+          <path d="M54 114 Q66 110 74 118" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".7" />
+          <path d="M62 128 Q73 124 80 130" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".6" />
+          <!-- folds right -->
+          <path d="M142 82 Q132 78 124 85" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".7" />
+          <path d="M148 98 Q136 94 128 102" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".7" />
+          <path d="M146 114 Q134 110 126 118" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".7" />
+          <path d="M138 128 Q127 124 120 130" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" opacity=".6" />
+          <!-- stem -->
+          <path d="M90 145 Q88 158 92 168 Q96 174 100 175 Q104 174 108 168 Q112 158 110 145" stroke="#a78bfa"
+            stroke-width="1.5" stroke-linecap="round" opacity=".8" />
+          <!-- neural dots -->
+          <circle cx="76" cy="88" r="2.5" fill="#c4b5fd" opacity=".9">
+            <animate attributeName="opacity" values=".9;.2;.9" dur="2.1s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="66" cy="108" r="2" fill="#a78bfa" opacity=".8">
+            <animate attributeName="opacity" values=".8;.2;.8" dur="1.7s" begin=".4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="124" cy="88" r="2.5" fill="#c4b5fd" opacity=".9">
+            <animate attributeName="opacity" values=".9;.2;.9" dur="2.4s" begin=".2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="134" cy="108" r="2" fill="#a78bfa" opacity=".8">
+            <animate attributeName="opacity" values=".8;.2;.8" dur="1.9s" begin=".6s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="100" cy="96" r="3" fill="#7c3aed" opacity=".6">
+            <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+          </circle>
+          <!-- neural arcs -->
+          <path d="M76 88 Q88 80 100 96" stroke="#c4b5fd" stroke-width=".8" opacity=".4" stroke-dasharray="3 2" />
+          <path d="M124 88 Q112 80 100 96" stroke="#c4b5fd" stroke-width=".8" opacity=".4" stroke-dasharray="3 2" />
+          <path d="M66 108 Q83 102 100 96" stroke="#a78bfa" stroke-width=".8" opacity=".35" stroke-dasharray="3 2" />
+          <path d="M134 108 Q117 102 100 96" stroke="#a78bfa" stroke-width=".8" opacity=".35" stroke-dasharray="3 2" />
+          <!-- EEG signal at bottom of organ -->
+          <path d="M30 180 L50 180 L55 165 L60 195 L65 160 L70 190 L75 175 L80 180 L170 180" stroke="#7c3aed"
+            stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".6">
+            <animate attributeName="stroke-dashoffset" from="300" to="0" dur="2.5s" repeatCount="indefinite" />
+            <animate attributeName="stroke-dasharray" values="300" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
+
+      <div class="panel-label">NEURO</div>
+      <h2 class="panel-title">Brain &<br>Neural Health</h2>
+      <p class="panel-sub">Detect neurological risk with sleep analysis and stroke prediction powered by Ensemble
+        Models.</p>
+
+      <div class="models">
+        <a href="/sleep" class="mcard brain-card">
+          <div class="mcard-icon">😴</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Sleep Health Model</div>
+            <div class="mcard-desc">Sleep disorders, apnea risk & rest quality analysis</div>
+          </div>
+          <div class="mcard-arrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+        <a href="/stroke" class="mcard brain-card">
+          <div class="mcard-icon">🧠</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Brain Stroke Model</div>
+            <div class="mcard-desc">Stroke probability from BP, age & vascular risk factors</div>
+          </div>
+          <div class="mcard-arrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <!-- EEG wave decoration bottom -->
+      <svg class="signal" viewBox="0 0 600 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0 30 L60 30 L80 10 L90 50 L100 5 L110 55 L120 30 L160 30 L180 18 L195 42 L210 30 L260 30 L270 15 L280 45 L290 30 L350 30 L365 20 L375 40 L385 30 L450 30 L460 12 L470 48 L480 30 L600 30"
+          stroke="#7c3aed" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="800"
+          stroke-dashoffset="800">
+          <animate attributeName="stroke-dashoffset" from="800" to="-800" dur="4s" repeatCount="indefinite" />
+        </path>
+      </svg>
+    </div>
+
+    <!-- ══════ HEART PANEL ══════ -->
+    <div class="panel panel-heart">
+
+      <!-- ambient orb -->
+      <div class="orb" style="width:400px;height:400px;background:var(--heart);top:-10%;left:-10%"></div>
+
+      <!-- heart SVG -->
+      <div class="organ-wrap">
+        <div class="ring ring1"></div>
+        <div class="ring ring2"></div>
+        <div class="ring ring3"></div>
+        <svg class="organ-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <defs>
+            <radialGradient id="heartGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fb7185" stop-opacity=".3" />
+              <stop offset="100%" stop-color="#e11d48" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="100" cy="105" rx="65" ry="60" fill="url(#heartGlow)" />
+          <!-- heart shape -->
+          <path
+            d="M100 145 Q68 125 54 106 Q40 87 50 68 Q58 52 72 52 Q86 52 100 68 Q114 52 128 52 Q142 52 150 68 Q160 87 146 106 Q132 125 100 145 Z"
+            stroke="#fb7185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <animate attributeName="d"
+              values="M100 145 Q68 125 54 106 Q40 87 50 68 Q58 52 72 52 Q86 52 100 68 Q114 52 128 52 Q142 52 150 68 Q160 87 146 106 Q132 125 100 145 Z;
+                    M100 148 Q66 127 51 107 Q36 87 47 66 Q56 49 71 49 Q86 49 100 66 Q114 49 129 49 Q144 49 153 66 Q164 87 149 107 Q134 127 100 148 Z;
+                    M100 145 Q68 125 54 106 Q40 87 50 68 Q58 52 72 52 Q86 52 100 68 Q114 52 128 52 Q142 52 150 68 Q160 87 146 106 Q132 125 100 145 Z"
+              dur="1s" repeatCount="indefinite" />
+          </path>
+          <!-- inner structure -->
+          <path d="M100 68 L100 100" stroke="#e11d48" stroke-width="1.5" opacity=".6" stroke-dasharray="3 2" />
+          <path d="M72 85 Q86 80 100 90 Q114 80 128 85" stroke="#fb7185" stroke-width="1.2" opacity=".5" />
+          <!-- aorta -->
+          <path d="M100 68 Q96 54 88 46 Q80 38 75 30" stroke="#fb7185" stroke-width="2" stroke-linecap="round"
+            opacity=".7" />
+          <path d="M100 68 Q104 54 112 48 Q120 42 125 36" stroke="#fb7185" stroke-width="1.5" stroke-linecap="round"
+            opacity=".6" />
+          <!-- glow dots inside -->
+          <circle cx="82" cy="100" r="3" fill="#fb7185" opacity=".7">
+            <animate attributeName="opacity" values=".7;.2;.7" dur="1s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="118" cy="100" r="3" fill="#fb7185" opacity=".7">
+            <animate attributeName="opacity" values=".7;.2;.7" dur="1s" begin=".5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="100" cy="118" r="4" fill="#e11d48" opacity=".5">
+            <animate attributeName="r" values="4;6;4" dur="1s" repeatCount="indefinite" />
+          </circle>
+          <!-- blood drop -->
+          <path d="M100 155 Q96 162 100 168 Q104 162 100 155" fill="#fb7185" opacity=".6">
+            <animate attributeName="opacity" values=".6;0;.6" dur="1.5s" repeatCount="indefinite" />
+            <animate attributeName="d"
+              values="M100 155 Q96 162 100 168 Q104 162 100 155;M100 160 Q96 167 100 173 Q104 167 100 160;M100 155 Q96 162 100 168 Q104 162 100 155"
+              dur="1.5s" repeatCount="indefinite" />
+          </path>
+          <!-- ECG line at bottom -->
+          <path d="M20 180 L55 180 L65 180 L72 160 L78 198 L84 155 L90 180 L180 180" stroke="#e11d48" stroke-width="1.5"
+            fill="none" stroke-linecap="round" opacity=".6">
+            <animate attributeName="stroke-dashoffset" from="300" to="0" dur="1.5s" repeatCount="indefinite" />
+            <animate attributeName="stroke-dasharray" values="300" repeatCount="indefinite" />
+          </path>
+        </svg>
+      </div>
+
+      <div class="panel-label">CARDIO</div>
+      <h2 class="panel-title">Heart &<br>Metabolic</h2>
+      <p class="panel-sub">Analyze cardiovascular disease and blood sugar with clinical-grade Ensemble Models.</p>
+
+      <div class="models">
+        <a href="/diabetes" class="mcard heart-card">
+          <div class="mcard-icon">🩸</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Diabetes Model</div>
+            <div class="mcard-desc">HbA1c, glucose & insulin resistance risk scoring</div>
+          </div>
+          <div class="mcard-arrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+        <a href="/heart" class="mcard heart-card">
+          <div class="mcard-icon">❤️</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Heart Disease Model</div>
+            <div class="mcard-desc">Coronary risk from cholesterol, ECG & chest pain data</div>
+          </div>
+          <div class="mcard-arrow">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fb7185" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+      </div>
+
+      <!-- ECG wave decoration bottom -->
+      <svg class="signal" viewBox="0 0 600 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0 30 L80 30 L90 30 L100 10 L108 50 L114 5 L120 55 L128 30 L200 30 L215 30 L222 18 L230 42 L238 30 L320 30 L328 10 L334 50 L340 5 L346 55 L354 30 L440 30 L450 18 L458 42 L466 30 L600 30"
+          stroke="#e11d48" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="800"
+          stroke-dashoffset="800">
+          <animate attributeName="stroke-dashoffset" from="800" to="-800" dur="2.5s" repeatCount="indefinite" />
+        </path>
+      </svg>
+    </div>
+
+  </div><!-- /split -->
+
+  <script>
+
+  </script>
+
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+
+</html>

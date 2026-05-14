@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HealthMat - Heart Disease Analysis</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/heart.css') }}">
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <canvas id="bg"></canvas>
+
+  <nav class="topbar">
+    <a href="/" class="logo">HealthMat</a>
+    <div class="tag">AI Clinical Intelligence Platform</div>
+    <a href="/" class="back">Heart Disease Model</a>
+  </nav>
+
+  <main class="page">
+
+    <section class="hero">
+      <div class="visual">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+
+        <svg class="heart-svg" viewBox="0 0 200 200" fill="none">
+          <defs>
+            <radialGradient id="heartGlow" cx="50%" cy="50%" r="55%">
+              <stop offset="0%" stop-color="#fb7185" stop-opacity=".35" />
+              <stop offset="100%" stop-color="#e11d48" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="100" cy="106" rx="70" ry="65" fill="url(#heartGlow)" />
+          <path
+            d="M100 148Q68 128 54 108Q40 88 50 68Q58 52 73 52Q87 52 100 68Q113 52 128 52Q143 52 151 68Q161 88 146 108Q132 128 100 148Z"
+            stroke="#fb7185" stroke-width="3" stroke-linejoin="round" />
+          <path d="M26 166H62L72 140L82 190L94 124L110 166H174" stroke="#e11d48" stroke-width="3" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <circle cx="84" cy="104" r="5" fill="#fb7185" />
+          <circle cx="116" cy="104" r="5" fill="#fb7185" />
+          <circle cx="100" cy="124" r="8" fill="#e11d48" />
+        </svg>
+      </div>
+
+      <div class="copy">
+        <div class="eyebrow">Heart & Metabolic</div>
+        <h1>Heart Disease<br>Risk Engine</h1>
+        <p>Enter the clinical heart parameters used by your trained model. The system analyzes chest pain type, blood
+          pressure, cholesterol, ECG results, exercise response, and ST slope.</p>
+
+        <div class="metric-row">
+          <div class="metric"><strong>50000+</strong><span>Trained Data</span></div>
+          <div class="metric"><strong>4</strong><span>Stacking Model Accuracy</span></div>
+          <div class="metric"><strong>Live</strong><span>Heart Disease Prediction</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head">
+        <div>
+          <h2>Clinical Parameters</h2>
+          <p>All fields map exactly to the heart disease model.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="form-grid">
+
+          <div class="field">
+            <label>Age <span class="live" id="ageVal">45</span></label>
+            <input type="range" id="age" min="18" max="100" value="45">
+            <span class="hint">Model column: Age</span>
+          </div>
+
+          <div class="field">
+            <label>Sex</label>
+            <select id="sex">
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+            <span class="hint">Model values: M or F</span>
+          </div>
+
+          <div class="field">
+            <label>Chest Pain Type</label>
+            <select id="cp">
+              <option value="TA">Typical Angina</option>
+              <option value="ATA">Atypical Angina</option>
+              <option value="NAP">Non-anginal Pain</option>
+              <option value="ASY">Asymptomatic</option>
+            </select>
+            <span class="hint">TA, ATA, NAP, ASY</span>
+          </div>
+
+          <div class="field">
+            <label>Resting BP <span class="live" id="bpVal">120</span></label>
+            <input type="range" id="trestbps" min="80" max="220" value="120">
+            <span class="hint">Model column: RestingBP</span>
+          </div>
+
+          <div class="field">
+            <label>Cholesterol <span class="live" id="cholVal">200</span></label>
+            <input type="range" id="chol" min="100" max="600" value="200">
+            <span class="hint">Model column: Cholesterol</span>
+          </div>
+
+          <div class="field">
+            <label>Fasting Sugar</label>
+            <select id="fbs">
+              <option value="0">Below 120 mg/dL</option>
+              <option value="1">Above 120 mg/dL</option>
+            </select>
+            <span class="hint">Model column: FastingBS</span>
+          </div>
+
+          <div class="field">
+            <label>Resting ECG</label>
+            <select id="restecg">
+              <option value="Normal">Normal</option>
+              <option value="ST">ST-T Abnormality</option>
+              <option value="LVH">LV Hypertrophy</option>
+            </select>
+            <span class="hint">Normal, ST, LVH</span>
+          </div>
+
+          <div class="field">
+            <label>Max Heart Rate <span class="live" id="hrVal">150</span></label>
+            <input type="range" id="thalach" min="60" max="230" value="150">
+            <span class="hint">Model column: MaxHR</span>
+          </div>
+
+          <div class="field">
+            <label>Exercise Angina</label>
+            <select id="exang">
+              <option value="N">No</option>
+              <option value="Y">Yes</option>
+            </select>
+            <span class="hint">Model values: N or Y</span>
+          </div>
+
+          <div class="field">
+            <label>Oldpeak <span class="live" id="oldpeakVal">1.0</span></label>
+            <input type="range" id="oldpeak" min="0" max="6.5" step="0.1" value="1">
+            <span class="hint">Model column: Oldpeak</span>
+          </div>
+
+          <div class="field">
+            <label>ST Slope</label>
+            <select id="slope">
+              <option value="Up">Upsloping</option>
+              <option value="Flat">Flat</option>
+              <option value="Down">Downsloping</option>
+            </select>
+            <span class="hint">Up, Flat, Down</span>
+          </div>
+
+        </div>
+
+        <button onclick="runHeartPrediction()" id="predictBtn">Analyze Heart Disease Risk</button>
+        <div id="error"></div>
+      </div>
+    </section>
+
+
+    <section id="results">
+      <div id="resultBox" class="result">
+        <div id="badge" class="badge"></div>
+        <h2 id="title"></h2>
+        <p id="subtitle"></p>
+        <div class="risk-track">
+          <div id="riskFill"></div>
+        </div>
+        <div id="riskScore"></div>
+      </div>
+
+      <div class="stat-grid" id="stats"></div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Visual Analysis</h2>
+            <p>Heart risk probability and clinical factor graphs.</p>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <h3>Risk Probability</h3>
+            <div class="chart-wrap"><canvas id="donut"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Clinical Radar</h3>
+            <div class="chart-wrap"><canvas id="radar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Risk Factor Bars</h3>
+            <div class="chart-wrap"><canvas id="bar"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Vitals Zones</h3>
+            <div class="chart-wrap"><canvas id="vitals"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Analysis Report</h2>
+            <p>Simple explanation for the submitted heart profile.</p>
+          </div>
+        </div>
+        <div class="reports" id="reports"></div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
+          <div>
+            <h2>Precautions & Health Plan</h2>
+            <p>Important heart-health guidance for patients.</p>
+          </div>
+        </div>
+
+        <div class="care-grid">
+          <div class="care-card"><strong>01</strong>
+            <h3>Check Blood Pressure</h3>
+            <p>Track blood pressure regularly and consult a clinician if it stays elevated.</p>
+          </div>
+          <div class="care-card"><strong>02</strong>
+            <h3>Control Cholesterol</h3>
+            <p>Limit fried foods, trans fats, and processed snacks. Add fiber-rich meals.</p>
+          </div>
+          <div class="care-card"><strong>03</strong>
+            <h3>Exercise Safely</h3>
+            <p>Walk or exercise regularly, but seek medical advice if chest pain appears.</p>
+          </div>
+          <div class="care-card"><strong>04</strong>
+            <h3>Stop Smoking</h3>
+            <p>Smoking damages blood vessels and sharply increases heart attack risk.</p>
+          </div>
+          <div class="care-card"><strong>05</strong>
+            <h3>Healthy Foods</h3>
+            <p>Prefer vegetables, oats, nuts, legumes, fish, fruits, and low-salt meals.</p>
+          </div>
+          <div class="care-card"><strong>06</strong>
+            <h3>Manage Stress</h3>
+            <p>Sleep well, practice breathing, and reduce chronic stress where possible.</p>
+          </div>
+          <div class="care-card"><strong>07</strong>
+            <h3>Know Symptoms</h3>
+            <p>Chest pain, sweating, breathlessness, jaw pain, or left arm pain need urgent care.</p>
+          </div>
+          <div class="care-card"><strong>08</strong>
+            <h3>Follow Medication</h3>
+            <p>Do not stop BP, cholesterol, diabetes, or heart medicines without medical advice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <script>
+
+  </script>
+
+  <script src="{{ url_for('static', filename='js/heart.js') }}"></script>
+</body>
+
+</html>
